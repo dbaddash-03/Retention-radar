@@ -1,0 +1,7 @@
+# Render Blueprint: New + > Blueprint > pick this repo. Free plan sleeps after inactivity (~30-60 s cold start).
+services:
+  - type: web
+    name: retention-radar
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health

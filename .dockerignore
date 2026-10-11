@@ -1,0 +1,4 @@
+artifacts/model.joblib
+.git
+.venv
+__pycache__

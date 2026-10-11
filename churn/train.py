@@ -65,4 +65,13 @@ def train(data=None, out=None, path=None):
     return metrics
 
 if __name__ == "__main__":
-    m = train(); print(json.dumps({k: m[k] for k in ("best_model", "threshold", "holdout", "economics")}, indent=2)); print(m["cv_leaderboard"])
+    import argparse
+    ap = argparse.ArgumentParser(description="Train the churn model and write artifacts/")
+    ap.add_argument("--mlflow", action="store_true", help="also log this run to MLflow (pip install -r requirements-mlflow.txt)")
+    ap.add_argument("--out", default=None, help="artifact directory (default: ./artifacts)")
+    a = ap.parse_args()
+    m = train(out=a.out)
+    print(json.dumps({k: m[k] for k in ("best_model", "threshold", "holdout", "economics")}, indent=2)); print(m["cv_leaderboard"])
+    if a.mlflow:
+        from .tracking import log_run
+        print("MLflow run id:", log_run(m, a.out or os.path.join(ROOT, "artifacts")))
